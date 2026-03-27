@@ -13,9 +13,9 @@
   --accent: #7d4f3b;
   --accent-soft: rgba(125, 79, 59, 0.12);
   --shadow: 0 24px 64px rgba(60, 37, 28, 0.12);
-  --radius-lg: 30px;
-  --radius-md: 22px;
-  --radius-sm: 14px;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
   --max-width: 1180px;
 }
 
@@ -165,7 +165,7 @@ img {
 .hero__title {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(3.2rem, 8vw, 6rem);
+  font-size: clamp(2.6rem, 6.2vw, 4.6rem);
   line-height: 0.92;
   letter-spacing: -0.04em;
 }
@@ -379,6 +379,37 @@ img {
   grid-template-columns: 1fr 1.1fr;
   gap: 1.25rem;
   align-items: start;
+}
+
+.portrait-feature {
+  display: grid;
+  grid-template-columns: 0.8fr 1fr;
+  gap: 1.25rem;
+  align-items: center;
+}
+
+.portrait-feature__image-wrap {
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line);
+}
+
+.portrait-feature__image {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+}
+
+.portrait-feature__copy {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.portrait-feature__copy h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.3vw, 3rem);
+  line-height: 1;
 }
 
 .audiobook-teaser__copy {
@@ -718,6 +749,7 @@ img {
   .download-grid,
   .chapter-nav,
   .audiobook-teaser,
+  .portrait-feature,
   .audiobook-teaser__stats {
     grid-template-columns: 1fr;
   }

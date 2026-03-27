@@ -2,7 +2,6 @@ import Link from "next/link";
 import { AudiobookPlayer } from "@/components/audiobook-player";
 import { BookCover } from "@/components/book-cover";
 import { ChapterCard } from "@/components/chapter-card";
-import { DownloadCard } from "@/components/download-card";
 import { EmptyState } from "@/components/empty-state";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -15,10 +14,8 @@ import {
   getChapterForAudiobookTrack,
   getCoverImageUrl,
   getDownloadHref,
-  getDownloadStateText,
   getPrimaryDownload,
   getSnapshot,
-  getStatusText,
 } from "./site-data";
 
 export default async function HomePage() {
@@ -27,12 +24,13 @@ export default async function HomePage() {
     getAudiobookManifest(),
     getAudiobookTracks(),
   ]);
+
   const primaryDownload = getPrimaryDownload(snapshot.metadata);
-  const primaryPdfEntry = snapshot.assetStatus.entries.find(
-    (entry) => entry.kind === "pdf" && entry.path === primaryDownload?.path,
-  );
   const coverImageUrl = getCoverImageUrl(snapshot.assetStatus.entries);
   const availableAudiobookTracks = audiobookTracks.filter((track) => track.exists);
+  const firstChapter = snapshot.chapters[0];
+  const startReadingHref = firstChapter ? `/kapitel/${firstChapter.slug}` : "/om-boken";
+  const primaryDownloadHref = primaryDownload ? getDownloadHref(primaryDownload) : undefined;
 
   return (
     <main className="page-shell">
@@ -48,34 +46,14 @@ export default async function HomePage() {
           </p>
 
           <div className="hero__actions">
-            <Link className="cta" href="/kapitel">
+            <a className="cta" href={startReadingHref}>
               Borja lasa online
-            </Link>
-            <Link className="cta cta--secondary" href="/om-boken">
-              Om boken
-            </Link>
-          </div>
-
-          <div className="stat-grid">
-            <div className="stat">
-              <span className="eyebrow">Status</span>
-              <strong>{snapshot.state}</strong>
-              <p className="section-copy">{getStatusText(snapshot.state)}</p>
-            </div>
-            <div className="stat">
-              <span className="eyebrow">Kapitel</span>
-              <strong>{snapshot.chapters.length}</strong>
-              <p className="section-copy">
-                Varje kapitel renderas direkt fran markdown-filer i projektet.
-              </p>
-            </div>
-            <div className="stat">
-              <span className="eyebrow">Nedladdning</span>
-              <strong>{primaryPdfEntry?.exists ? "PDF aktiv" : "PDF saknas"}</strong>
-              <p className="section-copy">
-                {getDownloadStateText(primaryPdfEntry)}
-              </p>
-            </div>
+            </a>
+            {primaryDownloadHref ? (
+              <a className="cta cta--secondary" download href={primaryDownloadHref}>
+                Ladda ned som pdf
+              </a>
+            ) : null}
           </div>
         </div>
 
@@ -91,40 +69,26 @@ export default async function HomePage() {
       </section>
 
       <section className="section">
-        <div className="section__heading">
-          <div>
-            <span className="eyebrow">Om upplagan</span>
-            <h2>En boksite byggd for langlasning</h2>
+        <div className="portrait-feature panel">
+          <div className="portrait-feature__image-wrap">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              alt="Edith Sodergran i en stilla lasstund"
+              className="portrait-feature__image"
+              src={getAssetHref("assets/edith-reading.png")}
+            />
           </div>
-          <Link className="site-header__link" href="/om-boken">
-            Las mer om upplagg
-          </Link>
-        </div>
-
-        <div className="detail-grid">
-          <div className="detail">
-            <span className="eyebrow">Las online</span>
-            <strong>Kapitel for kapitel</strong>
+          <div className="portrait-feature__copy">
+            <span className="eyebrow">Edith Sodergran</span>
+            <h2>En stilla bild mitt i bokens stora rorelse</h2>
             <p className="section-copy">
-              Tydlig navigation, lugn typografi och en layout som fungerar for
-              mobil, surfplatta och desktop.
+              Den har upplagan ror sig mellan dikt, sjukdom, modernism och
+              eftermale. Pa forstasidan far den ocksa ett lugnare anslag: Edith
+              som lasande gestalt, snarare an bara litterar symbol.
             </p>
-          </div>
-          <div className="detail">
-            <span className="eyebrow">Ladda ner</span>
-            <strong>Filbaserad PDF</strong>
-            <p className="section-copy">
-              Hela boken kan ligga som en separat fil i innehallsmappen och
-              serveras utan extra backend.
-            </p>
-          </div>
-          <div className="detail">
-            <span className="eyebrow">Underhall</span>
-            <strong>Markdown som kallformat</strong>
-            <p className="section-copy">
-              Nya kapitel eller revideringar kan laggas in utan att appens
-              struktur behover byggas om.
-            </p>
+            <Link className="site-header__link" href="/om-boken">
+              Las om hur boken blev till
+            </Link>
           </div>
         </div>
       </section>
@@ -135,9 +99,6 @@ export default async function HomePage() {
             <span className="eyebrow">Kapitel</span>
             <h2>Las boken online</h2>
           </div>
-          <Link className="site-header__link" href="/kapitel">
-            Visa alla kapitel
-          </Link>
         </div>
 
         {snapshot.chapters.length > 0 ? (
@@ -227,36 +188,6 @@ export default async function HomePage() {
             title="Ljudboksspåret är förberett"
           />
         )}
-      </section>
-
-      <section className="section">
-        <div className="section__heading">
-          <div>
-            <span className="eyebrow">Nedladdningar</span>
-            <h2>Bokfiler och material</h2>
-          </div>
-          <Link className="site-header__link" href="/ladda-ner">
-            Gå till nedladdningar
-          </Link>
-        </div>
-
-        <div className="download-grid">
-          <DownloadCard
-            href={
-              primaryPdfEntry?.exists && primaryDownload
-                ? getDownloadHref(primaryDownload)
-                : undefined
-            }
-            label="Huvudfil"
-            state={getDownloadStateText(primaryPdfEntry)}
-            title={primaryDownload?.label ?? "Hela boken som PDF"}
-          />
-          <DownloadCard
-            label="Innehall"
-            state="Omslag och eventuella extrafiler serveras fran samma innehallsstruktur nar de laggs in."
-            title="Assets och bilagor"
-          />
-        </div>
       </section>
 
       <SiteFooter />
