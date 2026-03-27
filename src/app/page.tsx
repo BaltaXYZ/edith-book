@@ -121,7 +121,7 @@ export default async function HomePage() {
 
         {snapshot.chapters.length > 0 ? (
           <div className="chapter-grid">
-            {snapshot.chapters.slice(0, 6).map((chapter, index) => (
+            {snapshot.chapters.map((chapter, index) => (
               <ChapterCard
                 key={chapter.slug}
                 excerpt={chapter.excerpt ?? chapter.summary}
