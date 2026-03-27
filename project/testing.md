@@ -22,7 +22,11 @@ Verifiera att sajten fungerar tekniskt, innehallsmassigt och upplevelsemassigt f
 - `pnpm typecheck`: passerar
 - `pnpm build`: passerar
 - Lokal HTTP-kontroll: `200 OK` for `/`, `/kapitel` och `/ladda-ner`
-- Placeholder-lage verifierat nar riktiga bokfiler saknas
+- Lokal HTTP-kontroll: `200 OK` for `/kapitel/inledande-oversikt`
+- Lokal HTTP-kontroll: `200 OK` och `application/pdf` for `/filer/downloads/edith-sodergran-bok-modern.pdf`
+- Riktiga kapitelrutter genereras vid build, totalt 12 kapitel
+- GitHub-push genomford till `origin/main`
+- Vercel-deploy genomford och markerad `READY`
 
 ## Ooppnade testfragor
 - Om e2e-ramverk ska anvandas eller om manuell + skriptad smoke-test racker

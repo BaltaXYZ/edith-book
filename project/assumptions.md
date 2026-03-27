@@ -11,6 +11,4 @@
 - V1 behover vara lokal/staging-klar och deployklar, inte nödvändigtvis publik.
 
 ## Antaganden som maste verifieras senare
-- Att kapitelmaterialet ar komplett och redo att publiceras
-- Att alla faktiska assets laggs in i den forvantade projektstrukturen
-- Att Vercel-atkomst finns om stagingdeploy ska genomforas senare
+- Inga kritiska antaganden aterstar for v1.

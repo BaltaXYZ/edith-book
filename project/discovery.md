@@ -52,3 +52,6 @@ Implementation far starta forst nar foljande ar sant:
 - publiceringsrattigheter ar tydliga
 - deployvag ar vald och verifierbar i den miljo som ingar i v1
 - externa blockerare ar dokumenterade och minimerade
+
+## Status
+Discovery-gaten ar passerad. Produkt, innehall, remote och deployvag ar verifierade for v1.

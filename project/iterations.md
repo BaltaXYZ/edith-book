@@ -26,7 +26,7 @@ Klar. Next.js, TypeScript, pnpm, lint/typecheck/build och filbaserad innehallspi
 - designriktning ar sammanhallen pa mobil och desktop
 
 ### Status
-Klar som appskal. Verifiering med verkligt bokinnehall aterstar.
+Klar och verifierad med verkligt bokinnehall.
 
 ## Iteration 3: Online-lasning och downloads
 ### Klart nar
@@ -35,7 +35,7 @@ Klar som appskal. Verifiering med verkligt bokinnehall aterstar.
 - trasiga lankar och saknade filer ar eliminerade
 
 ### Status
-Delvis klar. Floden och filrutten ar implementerade, men riktiga kapitel/PDF saknas fortfarande i projektet.
+Klar. Samtliga kapitel, omslag och PDF ar inkopplade och verifierade.
 
 ## Iteration 4: Releasehardning
 ### Klart nar
@@ -44,4 +44,4 @@ Delvis klar. Floden och filrutten ar implementerade, men riktiga kapitel/PDF sak
 - publik miljo ar verifierad mot karnfloden
 
 ### Status
-Pagaende. Lokal verifiering ar genomford, men slutlig innehalls- och eventuell stagingverifiering aterstar.
+Klar. Lokal verifiering, GitHub-push och Vercel-deploy ar genomforda.

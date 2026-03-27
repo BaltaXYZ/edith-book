@@ -3,10 +3,10 @@
 En boknara Next.js-sajt for att presentera, lasa och ladda ned en biografi om Edith Sodergran. V1 ar byggd for lokal eller staging-klar leverans och ar forberedd for senare Vercel-deploy.
 
 ## Nuvarande status
-- Appskalet ar implementerat och verifierat lokalt
-- Innehallspipelinen ar filbaserad och kan lasa metadata, kapitel och nedladdningar
-- Sajten fungerar i placeholder-lage tills riktiga filer laggs in
-- Slutlig innehallsverifiering blockerar fortfarande full v1-status
+- Appskalet ar implementerat och verifierat med riktiga kapitel, omslag och PDF
+- Innehallspipelinen ar filbaserad och lasa metadata, kapitel och nedladdningar direkt fran `content/book`
+- Koden ar pushad till GitHub-repot `BaltaXYZ/edith-book`
+- Vercel-projektet ar lankt och en fungerande deployment finns pa `https://edith-book.vercel.app`
 
 ## Teknik
 - Next.js 16
@@ -53,6 +53,5 @@ Själva kapiteltexten i markdown.
 - `/filer/[...slug]`: serverar PDF och assets direkt fran `content/book`
 
 ## Kanda blockerare
-- Riktiga kapitel, PDF och omslag ar inte inlagda i projektet annu
-- GitHub-remote ar inte kopplad i arbetsmappen
-- Deployatkomst till Vercel ar inte verifierad i denna miljo
+- Inga releaseblockerare oppna for v1
+- Lokal miljo kor Node 25.5.0 medan projektet ar pinnat till Node 22 via `.nvmrc`

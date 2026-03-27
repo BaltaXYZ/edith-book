@@ -18,9 +18,14 @@
 ## D-004: Deploymal
 - Status: beslutad
 - Beslut: GitHub ar canonical remote. V1 behover endast vara lokal/staging-klar. Vercel ar foredragen deployplattform nar deploy blir aktuell.
-- Risk: Remote och faktisk Vercel-atkomst ar inte verifierade i denna arbetsmapp annu.
+- Uppfoljning: Remote ar nu verifierad och projektet ar deployat via Vercel.
 
 ## D-005: Publikt scope
 - Status: beslutad
 - Beslut: Process-/AI-/agentmaterial ska inte visas publikt i v1.
 - Skal: Fokus ska ligga pa boken och lasupplevelsen.
+
+## D-006: Verkligt innehall och releasekanal
+- Status: beslutad
+- Beslut: PDF, omslag och tolv markdown-kapitel ar inkopplade i projektet. GitHub-repot ar `BaltaXYZ/edith-book` och Vercel-projektet ar `edith-book`.
+- Skal: Detta ar de verifierade externa slutpunkterna som nu bar v1.

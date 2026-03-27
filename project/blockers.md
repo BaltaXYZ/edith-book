@@ -2,22 +2,22 @@
 
 ## Oppna blockerare
 
-### B-001: Faktiska innehallsfiler saknas i projektet
-- Status: oppen
-- Allvar: kritisk
-- Effekt: Vi kan inte slutverifiera verkliga las- och downloadfloden utan PDF, markdown-kapitel och relevanta assets.
+Inga oppna blockerare for v1.
 
-### B-002: Deployatkomst for staging ar inte verifierad
-- Status: oppen
-- Allvar: medel
-- Effekt: Appen kan byggas deployklar, men stagingdeploy kan inte verifieras fullt ut forran atkomst finns.
+## Stangda blockerare
 
-### B-003: Remote-flode ar inte etablerat i arbetsmappen
-- Status: oppen
-- Allvar: medel
-- Effekt: Lokal Git finns nu, men kravet pa lopande push/PR kan inte uppfyllas fullt ut utan remote-strategi.
+### B-001: Faktiska innehallsfiler saknades i projektet
+- Status: stangd 2026-03-27
+- Losning: Tolv kapitel, omslagsbild och PDF ar nu inkopplade under `content/book`.
 
-### B-004: Faktiskt innehall maste fortfarande levereras in i forvantad struktur
-- Status: oppen
-- Allvar: hog
-- Effekt: Vi kan bygga sajt och pipeline nu, men inte slutverifiera verkligt bokinnehall forran filerna finns i projektet.
+### B-002: Deployatkomst for staging var inte verifierad
+- Status: stangd 2026-03-27
+- Losning: Vercel-link och deployment ar genomforda.
+
+### B-003: Remote-flode var inte etablerat i arbetsmappen
+- Status: stangd 2026-03-27
+- Losning: `origin` ar satt till `https://github.com/BaltaXYZ/edith-book.git` och `main` ar pushad.
+
+### B-004: Faktiskt innehall behovde levereras i forvantad struktur
+- Status: stangd 2026-03-27
+- Losning: Innehallsfilerna ar importerade och verifierade i appen.
