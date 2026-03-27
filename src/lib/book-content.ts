@@ -14,8 +14,68 @@ export interface BookPathConfig {
   chaptersDir: string;
   assetsDir: string;
   downloadsDir: string;
+  audioDir: string;
   coverImage: string;
   pdf: string;
+}
+
+export interface AudiobookConfig {
+  label: string;
+  description?: string;
+  intro?: string;
+  voice: string;
+  rate: number;
+  format: string;
+  bitrateKbps: number;
+  channels: number;
+  manifest: string;
+  tracksDir: string;
+}
+
+export interface AudiobookManifestTrack {
+  slug: string;
+  title: string;
+  order: number;
+  path: string;
+  sourcePath: string;
+  durationSeconds: number;
+  durationLabel: string;
+  wordCount: number;
+  textHash: string;
+  voice: string;
+  rate: number;
+  format: string;
+  bitrateKbps: number;
+  channels: number;
+}
+
+export interface AudiobookManifest {
+  version: number;
+  generatedAt: string;
+  voice: string;
+  rate: number;
+  format: string;
+  bitrateKbps: number;
+  channels: number;
+  trackCount: number;
+  totalDurationSeconds: number;
+  totalDurationLabel: string;
+  totalWordCount: number;
+  tracks: AudiobookManifestTrack[];
+}
+
+export type AudiobookState = BookContentState;
+
+export interface AudiobookTrack extends AudiobookManifestTrack {
+  exists: boolean;
+}
+
+export interface AudiobookAssetStatus {
+  state: AudiobookState;
+  manifestPath: string;
+  manifestExists: boolean;
+  missingTracks: AudiobookTrack[];
+  tracks: AudiobookTrack[];
 }
 
 export interface BookMetadata {
@@ -26,6 +86,7 @@ export interface BookMetadata {
   status: string;
   description?: string;
   paths: BookPathConfig;
+  audiobook?: AudiobookConfig;
   downloads: BookDownload[];
   notes?: string[];
 }
@@ -166,7 +227,7 @@ function extractOrderFromFilename(fileName: string): number | null {
   const match = path.basename(fileName).match(/^(\d+)[-_]/);
   if (!match) return null;
 
-  return Number.parseInt(match[1], 10);
+  return Number.parseInt(match[1], 10) + 1;
 }
 
 function stripOrderPrefix(fileName: string): string {
@@ -263,11 +324,13 @@ function normalizeMetadata(raw: Record<string, unknown> | null): BookMetadata {
     chaptersDir: "chapters",
     assetsDir: "assets",
     downloadsDir: "downloads",
+    audioDir: "audio",
     coverImage: "assets/cover.jpg",
     pdf: "downloads/edith-sodergran-biografi.pdf",
   };
 
   const paths = isObject(raw?.paths) ? raw?.paths : {};
+  const audiobook = isObject(raw?.audiobook) ? raw?.audiobook : {};
   const downloads = Array.isArray(raw?.downloads) ? raw.downloads.filter(isObject) : [];
 
   return {
@@ -281,9 +344,23 @@ function normalizeMetadata(raw: Record<string, unknown> | null): BookMetadata {
       chaptersDir: toStringOr(paths.chaptersDir, fallbackPaths.chaptersDir),
       assetsDir: toStringOr(paths.assetsDir, fallbackPaths.assetsDir),
       downloadsDir: toStringOr(paths.downloadsDir, fallbackPaths.downloadsDir),
+      audioDir: toStringOr(paths.audioDir, fallbackPaths.audioDir),
       coverImage: toStringOr(paths.coverImage, fallbackPaths.coverImage),
       pdf: toStringOr(paths.pdf, fallbackPaths.pdf),
     },
+    audiobook: isObject(raw?.audiobook)
+      ? {
+          label: toStringOr(audiobook.label, "Ljudbok"),
+          description: typeof audiobook.description === "string" ? audiobook.description : undefined,
+          voice: toStringOr(audiobook.voice, "Alva"),
+          rate: toNumberOr(audiobook.rate, 165),
+          format: toStringOr(audiobook.format, "m4a"),
+          bitrateKbps: toNumberOr(audiobook.bitrateKbps, 32),
+          channels: toNumberOr(audiobook.channels, 1),
+          manifest: toStringOr(audiobook.manifest, "audio/manifest.json"),
+          tracksDir: toStringOr(audiobook.tracksDir, "audio/tracks"),
+        }
+      : undefined,
     downloads: downloads.map((download) => ({
       label: toStringOr(download.label, "Nedladdning"),
       type: toStringOr(download.type, "file"),
@@ -297,6 +374,19 @@ export async function loadBookMetadata(bookRoot = DEFAULT_BOOK_ROOT): Promise<Bo
   const metadataPath = path.join(bookRoot, "metadata.json");
   const raw = await readJsonFile<Record<string, unknown>>(metadataPath);
   return normalizeMetadata(raw);
+}
+
+function formatDuration(durationSeconds: number): string {
+  const totalSeconds = Math.max(0, Math.round(durationSeconds));
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  if (hours > 0) {
+    return `${hours}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+  }
+
+  return `${minutes}:${String(seconds).padStart(2, "0")}`;
 }
 
 export async function listChapterFiles(bookRoot = DEFAULT_BOOK_ROOT): Promise<string[]> {
@@ -450,4 +540,54 @@ export async function getBookNavigation(currentSlug: string, bookRoot = DEFAULT_
 export async function getBookContentState(bookRoot = DEFAULT_BOOK_ROOT): Promise<BookContentState> {
   const snapshot = await loadBookSnapshot(bookRoot);
   return snapshot.state;
+}
+
+export async function loadAudiobookManifest(bookRoot = DEFAULT_BOOK_ROOT): Promise<AudiobookManifest | null> {
+  const metadata = await loadBookMetadata(bookRoot);
+  const manifestPath = path.join(bookRoot, metadata.audiobook?.manifest ?? "audio/manifest.json");
+  const raw = await readJsonFile<AudiobookManifest>(manifestPath);
+  return raw;
+}
+
+export async function listAudiobookTracks(bookRoot = DEFAULT_BOOK_ROOT): Promise<AudiobookTrack[]> {
+  const manifest = await loadAudiobookManifest(bookRoot);
+  if (!manifest) {
+    return [];
+  }
+
+  return Promise.all(
+    manifest.tracks.map(async (track) => {
+      const absolutePath = path.join(bookRoot, track.path);
+      return {
+        ...track,
+        exists: await fileExists(absolutePath),
+      } satisfies AudiobookTrack;
+    }),
+  );
+}
+
+export async function inspectAudiobookAssets(bookRoot = DEFAULT_BOOK_ROOT): Promise<AudiobookAssetStatus> {
+  const metadata = await loadBookMetadata(bookRoot);
+  const manifestPath = path.join(bookRoot, metadata.audiobook?.manifest ?? "audio/manifest.json");
+  const manifestExists = await fileExists(manifestPath);
+  const tracks = await listAudiobookTracks(bookRoot);
+  const missingTracks = tracks.filter((track) => !track.exists);
+  const state: AudiobookState =
+    manifestExists && missingTracks.length === 0 && tracks.length > 0
+      ? "ready"
+      : manifestExists && tracks.length > 0
+        ? "partial"
+        : "placeholder";
+
+  return {
+    state,
+    manifestPath: metadata.audiobook?.manifest ?? "audio/manifest.json",
+    manifestExists,
+    missingTracks,
+    tracks,
+  };
+}
+
+export function formatAudiobookDuration(seconds: number): string {
+  return formatDuration(seconds);
 }

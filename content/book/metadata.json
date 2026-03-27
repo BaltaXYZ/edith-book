@@ -9,8 +9,21 @@
     "chaptersDir": "chapters",
     "assetsDir": "assets",
     "downloadsDir": "downloads",
+    "audioDir": "audio",
     "coverImage": "assets/cover.jpg",
     "pdf": "downloads/edith-sodergran-bok-modern.pdf"
+  },
+  "audiobook": {
+    "label": "Ljudbok",
+    "intro": "Lyssna på Edith Södergrans biografi kapitel för kapitel i en varsam uppläst version.",
+    "description": "Kapitelvisa uppläsningar med svensk röst och redaktionell ton.",
+    "voice": "Alva",
+    "rate": 165,
+    "format": "m4a",
+    "bitrateKbps": 32,
+    "channels": 1,
+    "manifest": "audio/manifest.json",
+    "tracksDir": "audio/tracks"
   },
   "downloads": [
     {

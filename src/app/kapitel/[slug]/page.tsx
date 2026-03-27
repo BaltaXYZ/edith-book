@@ -1,9 +1,13 @@
+import { AudiobookPlayer } from "@/components/audiobook-player";
 import { Prose } from "@/components/prose";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import {
   estimateReadingTime,
   formatChapterPosition,
+  getAssetHref,
+  getAudiobookTrackForChapter,
+  getAudiobookTracks,
   getChapterPageData,
   getPublishedChapterSummaries,
   getSnapshot,
@@ -21,10 +25,16 @@ export async function generateStaticParams() {
 }
 
 export default async function ChapterPage({ params }: ChapterPageProps) {
-  const [{ slug }, snapshot] = await Promise.all([params, getSnapshot()]);
+  const [{ slug }, snapshot, audiobookTracks] = await Promise.all([
+    params,
+    getSnapshot(),
+    getAudiobookTracks(),
+  ]);
   const { chapter, html, navigation } = await getChapterPageData(slug);
   const chapterIndex =
     snapshot.chapters.findIndex((item) => item.slug === chapter.slug) + 1;
+  const currentAudiobookTrack = getAudiobookTrackForChapter(chapter, audiobookTracks);
+  const availableAudiobookTracks = audiobookTracks.filter((track) => track.exists);
 
   return (
     <main className="page-shell">
@@ -47,6 +57,32 @@ export default async function ChapterPage({ params }: ChapterPageProps) {
           </Prose>
         </article>
       </section>
+
+      {currentAudiobookTrack?.exists ? (
+        <section className="section">
+          <AudiobookPlayer
+            description="Lyssna pa det har kapitlet direkt eller oppna hela ljudboken for att hoppa mellan spår."
+            initialSlug={currentAudiobookTrack.slug}
+            title={`Lyssna pa ${chapter.title}`}
+            tracks={availableAudiobookTracks.map((track) => {
+              const linkedChapter = snapshot.chapters.find(
+                (item) =>
+                  item.relativePath === track.sourcePath || item.slug === track.slug,
+              );
+              return {
+                audioSrc: getAssetHref(track.path),
+                durationLabel: track.durationLabel,
+                durationSeconds: track.durationSeconds,
+                href: linkedChapter ? `/kapitel/${linkedChapter.slug}` : "/ljudbok",
+                slug: track.slug,
+                summary: linkedChapter?.summary ?? linkedChapter?.excerpt,
+                title: track.title,
+              };
+            })}
+            variant="compact"
+          />
+        </section>
+      ) : null}
 
       <section className="section">
         <div className="detail-grid">

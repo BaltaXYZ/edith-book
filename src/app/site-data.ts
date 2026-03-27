@@ -8,6 +8,9 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeStringify from "rehype-stringify";
 import type {
   AssetStatusEntry,
+  AudiobookAssetStatus,
+  AudiobookManifest,
+  AudiobookTrack,
   BookDownload,
   BookMetadata,
   BookSnapshot,
@@ -18,6 +21,10 @@ import {
   getBookNavigation,
   loadBookSnapshot,
   loadChapterBySlug,
+  inspectAudiobookAssets,
+  loadAudiobookManifest,
+  listAudiobookTracks,
+  formatAudiobookDuration,
   toChapterSummary,
 } from "@/lib/book-content";
 
@@ -121,4 +128,51 @@ export function formatChapterPosition(index: number, total: number): string {
 
 export function resolveBookFilePath(relativePath: string): string {
   return path.resolve(process.cwd(), "content", "book", relativePath);
+}
+
+export async function getAudiobookManifest(): Promise<AudiobookManifest | null> {
+  return loadAudiobookManifest();
+}
+
+export async function getAudiobookTracks(): Promise<AudiobookTrack[]> {
+  return listAudiobookTracks();
+}
+
+export async function getAudiobookStatus(): Promise<AudiobookAssetStatus> {
+  return inspectAudiobookAssets();
+}
+
+export function formatAudiobookTrackDuration(seconds: number): string {
+  return formatAudiobookDuration(seconds);
+}
+
+export function getAudiobookTrackBySlug(
+  tracks: AudiobookTrack[],
+  slug: string,
+): AudiobookTrack | null {
+  return tracks.find((track) => track.slug === slug) ?? null;
+}
+
+export function getChapterForAudiobookTrack(
+  chapters: ChapterRecord[],
+  track: AudiobookTrack,
+): ChapterRecord | null {
+  return (
+    chapters.find(
+      (chapter) =>
+        chapter.relativePath === track.sourcePath || chapter.slug === track.slug,
+    ) ?? null
+  );
+}
+
+export function getAudiobookTrackForChapter(
+  chapter: ChapterRecord,
+  tracks: AudiobookTrack[],
+): AudiobookTrack | null {
+  return (
+    tracks.find(
+      (track) =>
+        track.sourcePath === chapter.relativePath || track.slug === chapter.slug,
+    ) ?? null
+  );
 }

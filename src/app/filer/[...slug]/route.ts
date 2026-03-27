@@ -4,8 +4,10 @@ import { NextResponse } from "next/server";
 import { DEFAULT_BOOK_ROOT } from "@/lib/book-content";
 
 const CONTENT_TYPES: Record<string, string> = {
+  ".aac": "audio/aac",
   ".jpg": "image/jpeg",
   ".jpeg": "image/jpeg",
+  ".m4a": "audio/mp4",
   ".md": "text/markdown; charset=utf-8",
   ".pdf": "application/pdf",
   ".png": "image/png",
@@ -39,7 +41,8 @@ export async function GET(_: Request, { params }: FileRouteProps) {
   try {
     const buffer = await fs.readFile(candidatePath);
     const contentType = getContentType(candidatePath);
-    const disposition = contentType === "application/pdf" ? "attachment" : "inline";
+    const disposition =
+      contentType === "application/pdf" ? "attachment" : "inline";
 
     return new NextResponse(new Uint8Array(buffer), {
       headers: {

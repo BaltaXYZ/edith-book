@@ -7,6 +7,7 @@ Detta är den filbaserade innehållskällan för bokprojektet.
 - `chapters/` innehåller kapitel som markdown-filer med frontmatter
 - `assets/` innehåller omslag och övriga bildfiler
 - `downloads/` innehåller PDF och andra nedladdningsbara filer
+- `audio/` innehåller genererade ljudfiler och manifest för ljudboken
 
 ## Regler
 - Innehållspipelinen ska fungera även när inga kapitel ännu finns.
@@ -15,3 +16,13 @@ Detta är den filbaserade innehållskällan för bokprojektet.
 
 ## Förväntat arbetssätt
 Lägg in riktiga filer här när de är tillgängliga och låt applikationens serverkod läsa dem via `src/lib/book-content.ts`.
+
+## Ljudbok
+Generera kapitelvisa ljudfiler med:
+
+```bash
+pnpm audiobook:generate
+```
+
+Detta skapar `content/book/audio/manifest.json` och AAC-filer i `content/book/audio/tracks/`.
+Anvand `pnpm audiobook:generate:force` om alla spår ska genereras om från grunden.

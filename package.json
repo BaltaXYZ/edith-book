@@ -11,7 +11,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "audiobook:generate": "node scripts/generate-audiobook.mjs",
+    "audiobook:generate:force": "node scripts/generate-audiobook.mjs --force",
+    "audiobook:inspect": "node scripts/generate-audiobook.mjs --inspect"
   },
   "dependencies": {
     "clsx": "^2.1.1",

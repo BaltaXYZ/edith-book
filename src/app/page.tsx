@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AudiobookPlayer } from "@/components/audiobook-player";
 import { BookCover } from "@/components/book-cover";
 import { ChapterCard } from "@/components/chapter-card";
 import { DownloadCard } from "@/components/download-card";
@@ -7,6 +8,11 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import {
   estimateReadingTime,
+  formatAudiobookTrackDuration,
+  getAssetHref,
+  getAudiobookManifest,
+  getAudiobookTracks,
+  getChapterForAudiobookTrack,
   getCoverImageUrl,
   getDownloadHref,
   getDownloadStateText,
@@ -16,12 +22,17 @@ import {
 } from "./site-data";
 
 export default async function HomePage() {
-  const snapshot = await getSnapshot();
+  const [snapshot, audiobookManifest, audiobookTracks] = await Promise.all([
+    getSnapshot(),
+    getAudiobookManifest(),
+    getAudiobookTracks(),
+  ]);
   const primaryDownload = getPrimaryDownload(snapshot.metadata);
   const primaryPdfEntry = snapshot.assetStatus.entries.find(
     (entry) => entry.kind === "pdf" && entry.path === primaryDownload?.path,
   );
   const coverImageUrl = getCoverImageUrl(snapshot.assetStatus.entries);
+  const availableAudiobookTracks = audiobookTracks.filter((track) => track.exists);
 
   return (
     <main className="page-shell">
@@ -146,6 +157,74 @@ export default async function HomePage() {
           <EmptyState
             body="Lagg in markdown-filer i content/book/chapters for att fylla bokhyllan med riktiga kapitel. Sajten ar redan forberedd for strukturen."
             title="Kapitelvyn ar redo for innehall"
+          />
+        )}
+      </section>
+
+      <section className="section">
+        <div className="section__heading">
+          <div>
+            <span className="eyebrow">Ljudbok</span>
+            <h2>Lyssna i samma redaktionella rytm</h2>
+          </div>
+          <Link className="site-header__link" href="/ljudbok">
+            Oppna ljudboken
+          </Link>
+        </div>
+
+        {availableAudiobookTracks.length > 0 ? (
+          <div className="audiobook-teaser panel">
+            <div className="audiobook-teaser__copy">
+              <p className="section-copy">
+                {snapshot.metadata.audiobook?.intro ??
+                  "Varje kapitel finns som ett eget ljudspår sa att du enkelt kan fortsatta dar du slutade eller vaxla mellan lasning och lyssning."}
+              </p>
+              <div className="audiobook-teaser__stats">
+                <div>
+                  <span className="eyebrow">Spår</span>
+                  <strong>{audiobookManifest?.trackCount ?? availableAudiobookTracks.length}</strong>
+                </div>
+                <div>
+                  <span className="eyebrow">Total speltid</span>
+                  <strong>
+                    {audiobookManifest?.totalDurationLabel ??
+                      formatAudiobookTrackDuration(
+                        availableAudiobookTracks.reduce(
+                          (sum, track) => sum + track.durationSeconds,
+                          0,
+                        ),
+                      )}
+                  </strong>
+                </div>
+                <div>
+                  <span className="eyebrow">Rost</span>
+                  <strong>{audiobookManifest?.voice ?? snapshot.metadata.audiobook?.voice ?? "Alva"}</strong>
+                </div>
+              </div>
+            </div>
+
+            <AudiobookPlayer
+              description="Starta direkt med inledningen eller ga vidare till den fulla ljudboksvyn."
+              title="Provlyssna"
+              tracks={availableAudiobookTracks.slice(0, 3).map((track) => {
+                const chapter = getChapterForAudiobookTrack(snapshot.chapters, track);
+                return {
+                  audioSrc: getAssetHref(track.path),
+                  durationLabel: track.durationLabel,
+                  durationSeconds: track.durationSeconds,
+                  href: chapter ? `/kapitel/${chapter.slug}` : "/ljudbok",
+                  slug: track.slug,
+                  summary: chapter?.summary ?? chapter?.excerpt,
+                  title: track.title,
+                };
+              })}
+              variant="compact"
+            />
+          </div>
+        ) : (
+          <EmptyState
+            body="Ljudspår kan genereras lokalt från kapitelmaterialet och kommer sedan att dyka upp här som en lyssningsklar ljudbok."
+            title="Ljudboksspåret är förberett"
           />
         )}
       </section>

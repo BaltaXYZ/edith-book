@@ -5,6 +5,7 @@ const navigation = [
   { href: "/" as Route, label: "Start" },
   { href: "/om-boken" as Route, label: "Om boken" },
   { href: "/kapitel" as Route, label: "Kapitel" },
+  { href: "/ljudbok" as Route, label: "Ljudbok" },
   { href: "/ladda-ner" as Route, label: "Ladda ner" },
 ];
 
