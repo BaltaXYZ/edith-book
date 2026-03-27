@@ -2,17 +2,10 @@ import { ChapterCard } from "@/components/chapter-card";
 import { EmptyState } from "@/components/empty-state";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import {
-  estimateReadingTime,
-  getPublishedChapterSummaries,
-  getSnapshot,
-} from "../site-data";
+import { estimateReadingTime, getSnapshot } from "../site-data";
 
 export default async function ChaptersPage() {
-  const [snapshot, chapters] = await Promise.all([
-    getSnapshot(),
-    getPublishedChapterSummaries(),
-  ]);
+  const snapshot = await getSnapshot();
 
   return (
     <main className="page-shell">
@@ -28,15 +21,15 @@ export default async function ChaptersPage() {
       </section>
 
       <section className="section">
-        {chapters.length > 0 ? (
+        {snapshot.chapters.length > 0 ? (
           <div className="chapter-grid">
-            {chapters.map((chapter, index) => (
+            {snapshot.chapters.map((chapter, index) => (
               <ChapterCard
                 key={chapter.slug}
                 excerpt={chapter.excerpt ?? chapter.summary}
                 href={`/kapitel/${chapter.slug}`}
                 index={index + 1}
-                readingTime={estimateReadingTime(chapter.summary ?? chapter.excerpt ?? chapter.title)}
+                readingTime={estimateReadingTime(chapter.body)}
                 title={chapter.title}
               />
             ))}

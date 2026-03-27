@@ -162,6 +162,64 @@ function slugify(input: string): string {
     .replace(/-{2,}/g, "-");
 }
 
+function extractOrderFromFilename(fileName: string): number | null {
+  const match = path.basename(fileName).match(/^(\d+)[-_]/);
+  if (!match) return null;
+
+  return Number.parseInt(match[1], 10);
+}
+
+function stripOrderPrefix(fileName: string): string {
+  return path.basename(fileName, path.extname(fileName)).replace(/^\d+[-_]?/, "");
+}
+
+function stripChapterPrefix(title: string): string {
+  return title
+    .replace(/^kapitel\s+\d+\.\s*/i, "")
+    .replace(/^kapitel\s+\d+:\s*/i, "")
+    .trim();
+}
+
+function extractHeadingAndBody(markdown: string): { heading?: string; body: string } {
+  const trimmed = markdown.trim();
+  const headingMatch = trimmed.match(/^#\s+(.+?)\n+([\s\S]*)$/);
+
+  if (!headingMatch) {
+    return { body: trimmed };
+  }
+
+  return {
+    heading: headingMatch[1].trim(),
+    body: headingMatch[2].trim(),
+  };
+}
+
+function stripMarkdownForExcerpt(value: string): string {
+  return value
+    .replace(/!\[[^\]]*]\([^)]+\)/g, "")
+    .replace(/\[([^\]]+)]\([^)]+\)/g, "$1")
+    .replace(/[*_`>#]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function truncateText(value: string, maxLength = 240): string {
+  if (value.length <= maxLength) return value;
+
+  const truncated = value.slice(0, maxLength).trimEnd();
+  const safeCut = truncated.lastIndexOf(" ");
+  return `${(safeCut > 80 ? truncated.slice(0, safeCut) : truncated).trimEnd()}...`;
+}
+
+function inferExcerpt(markdown: string): string | undefined {
+  const paragraphs = markdown
+    .split(/\n\s*\n/)
+    .map((paragraph) => stripMarkdownForExcerpt(paragraph))
+    .filter(Boolean);
+
+  return paragraphs[0] ? truncateText(paragraphs[0]) : undefined;
+}
+
 async function readJsonFile<T>(filePath: string): Promise<T | null> {
   try {
     const raw = await fs.readFile(filePath, "utf8");
@@ -256,20 +314,37 @@ export async function listChapters(bookRoot = DEFAULT_BOOK_ROOT): Promise<Chapte
       const markdown = await fs.readFile(sourcePath, "utf8");
       const parsed = parseMarkdownFrontmatter(markdown);
       const relativePath = path.relative(bookRoot, sourcePath).replace(/\\/g, "/");
-      const baseSlug = slugify(path.basename(sourcePath, path.extname(sourcePath)));
-      const title = toStringOr(parsed.frontmatter.title, baseSlug.replace(/-/g, " "));
+      const fileName = path.basename(sourcePath);
+      const inferredOrder = extractOrderFromFilename(fileName);
+      const baseSlug = slugify(stripOrderPrefix(fileName));
+      const { heading, body } = extractHeadingAndBody(parsed.body);
+      const inferredTitle = heading
+        ? stripChapterPrefix(heading)
+        : stripOrderPrefix(fileName).replace(/-/g, " ");
+      const title = toStringOr(parsed.frontmatter.title, inferredTitle);
       const slug = slugify(toStringOr(parsed.frontmatter.slug, baseSlug || title));
-      const order = toNumberOr(parsed.frontmatter.order, Number.MAX_SAFE_INTEGER);
+      const order = toNumberOr(
+        parsed.frontmatter.order,
+        inferredOrder ?? Number.MAX_SAFE_INTEGER,
+      );
       const published = toBooleanOr(parsed.frontmatter.published, true) && !toBooleanOr(parsed.frontmatter.hidden, false);
+      const excerpt =
+        typeof parsed.frontmatter.excerpt === "string"
+          ? parsed.frontmatter.excerpt
+          : inferExcerpt(body);
+      const summary =
+        typeof parsed.frontmatter.summary === "string"
+          ? parsed.frontmatter.summary
+          : excerpt;
 
       return {
         slug,
         title,
         order,
-        excerpt: typeof parsed.frontmatter.excerpt === "string" ? parsed.frontmatter.excerpt : undefined,
-        summary: typeof parsed.frontmatter.summary === "string" ? parsed.frontmatter.summary : undefined,
+        excerpt,
+        summary,
         frontmatter: parsed.frontmatter as ChapterFrontmatter,
-        body: parsed.body.trim(),
+        body,
         sourcePath,
         relativePath,
         published,

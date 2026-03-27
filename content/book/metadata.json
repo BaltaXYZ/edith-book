@@ -3,24 +3,24 @@
   "title": "Edith Södergran – biografi online",
   "subtitle": "En boknära webbplats för läsning och nedladdning",
   "language": "sv",
-  "status": "placeholder",
-  "description": "Filbaserad innehållsmodell för en biografisajt med kapitel, nedladdningar och redaktionell bokpresentation.",
+  "status": "ready",
+  "description": "En fullängdsbiografi om Edith Södergran, tillgänglig för online-läsning kapitel för kapitel och som nedladdningsbar PDF.",
   "paths": {
     "chaptersDir": "chapters",
     "assetsDir": "assets",
     "downloadsDir": "downloads",
     "coverImage": "assets/cover.jpg",
-    "pdf": "downloads/edith-sodergran-biografi.pdf"
+    "pdf": "downloads/edith-sodergran-bok-modern.pdf"
   },
   "downloads": [
     {
       "label": "Hela boken som PDF",
       "type": "pdf",
-      "path": "downloads/edith-sodergran-biografi.pdf"
+      "path": "downloads/edith-sodergran-bok-modern.pdf"
     }
   ],
   "notes": [
-    "Byt ut placeholder-status när verkliga kapitel och assets är inlagda.",
-    "Kapitel ska ligga som separata markdown-filer i content/book/chapters."
+    "Kapitlen är importerade från manuscript/chapters.zip och visas direkt från markdown-filer.",
+    "Omslagsbilden är extraherad från den första sidan i PDF-upplagan."
   ]
 }
