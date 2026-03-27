@@ -23,7 +23,7 @@ export function ChapterCard({
         {excerpt ? <p>{excerpt}</p> : null}
       </div>
       <div className="chapter-card__meta">
-        <span>Las kapitel</span>
+        <span>Läs kapitel</span>
         {readingTime ? <span>{readingTime}</span> : null}
       </div>
     </a>

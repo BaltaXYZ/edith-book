@@ -15,7 +15,7 @@ export function BookCover({
     return (
       <div className="book-cover book-cover--image">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img alt={`Omslag for ${title}`} src={imageUrl} />
+        <img alt={`Omslag för ${title}`} src={imageUrl} />
       </div>
     );
   }

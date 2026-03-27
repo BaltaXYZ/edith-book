@@ -25,9 +25,9 @@ const sansFont = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "Edith Sodergran – biografi online",
+  title: "Edith Södergran – biografi online",
   description:
-    "En boknara webbplats for att lasa en biografi om Edith Sodergran online och ladda ned boken i PDF-format.",
+    "En boknära webbplats för att läsa en biografi om Edith Södergran online och ladda ned boken i PDF-format.",
 };
 
 export default function RootLayout({

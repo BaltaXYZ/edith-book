@@ -38,7 +38,7 @@ export default async function ChapterPage({ params }: ChapterPageProps) {
 
   return (
     <main className="page-shell">
-      <SiteHeader chapterCount={snapshot.chapters.length} />
+      <SiteHeader />
 
       <section className="page-intro">
         <span className="eyebrow">
@@ -61,9 +61,9 @@ export default async function ChapterPage({ params }: ChapterPageProps) {
       {currentAudiobookTrack?.exists ? (
         <section className="section">
           <AudiobookPlayer
-            description="Lyssna pa det har kapitlet direkt eller oppna hela ljudboken for att hoppa mellan spår."
+            description="Lyssna på det här kapitlet direkt eller öppna hela ljudboken för att hoppa mellan spår."
             initialSlug={currentAudiobookTrack.slug}
-            title={`Lyssna pa ${chapter.title}`}
+            title={`Lyssna på ${chapter.title}`}
             tracks={availableAudiobookTracks.map((track) => {
               const linkedChapter = snapshot.chapters.find(
                 (item) =>
@@ -73,7 +73,7 @@ export default async function ChapterPage({ params }: ChapterPageProps) {
                 audioSrc: getAssetHref(track.path),
                 durationLabel: track.durationLabel,
                 durationSeconds: track.durationSeconds,
-                href: linkedChapter ? `/kapitel/${linkedChapter.slug}` : "/ljudbok",
+                href: linkedChapter ? `/kapitel/${linkedChapter.slug}` : "/#ljudbok",
                 slug: track.slug,
                 summary: linkedChapter?.summary ?? linkedChapter?.excerpt,
                 title: track.title,
@@ -87,25 +87,25 @@ export default async function ChapterPage({ params }: ChapterPageProps) {
       <section className="section">
         <div className="detail-grid">
           <div className="detail">
-            <span className="eyebrow">Lasrytmen</span>
+            <span className="eyebrow">Läsrytmen</span>
             <strong>{estimateReadingTime(chapter.body)}</strong>
             <p className="section-copy">
-              Kapiteltexten lases direkt fran filsystemet och renderas till HTML
+              Kapiteltexten läses direkt från filsystemet och renderas till HTML
               vid byggning eller sidgenerering.
             </p>
           </div>
           <div className="detail">
-            <span className="eyebrow">Kallfil</span>
+            <span className="eyebrow">Källfil</span>
             <strong>{chapter.relativePath}</strong>
             <p className="section-copy">
-              Frontmatter styr titel, ordning, utdrag och slug for kapitelvyn.
+              Frontmatter styr titel, ordning, utdrag och slug för kapitelvyn.
             </p>
           </div>
           <div className="detail">
             <span className="eyebrow">Navigering</span>
-            <strong>{navigation.next ? "Fortsatt lasa" : "Sista kapitlet"}</strong>
+            <strong>{navigation.next ? "Fortsätt läsa" : "Sista kapitlet"}</strong>
             <p className="section-copy">
-              Anvand den nedre navigeringen for att ga vidare eller tillbaka i
+              Använd den nedre navigeringen för att gå vidare eller tillbaka i
               boken.
             </p>
           </div>
@@ -119,13 +119,13 @@ export default async function ChapterPage({ params }: ChapterPageProps) {
               className="panel chapter-nav__link"
               href={`/kapitel/${navigation.previous.slug}`}
             >
-              <span className="eyebrow">Foregaende</span>
+              <span className="eyebrow">Föregående</span>
               <strong>{navigation.previous.title}</strong>
             </a>
           ) : (
             <div className="panel chapter-nav__link chapter-nav__link--muted">
-              <span className="eyebrow">Foregaende</span>
-              <strong>Bokens borjan</strong>
+              <span className="eyebrow">Föregående</span>
+              <strong>Bokens början</strong>
             </div>
           )}
 
@@ -134,13 +134,13 @@ export default async function ChapterPage({ params }: ChapterPageProps) {
               className="panel chapter-nav__link"
               href={`/kapitel/${navigation.next.slug}`}
             >
-              <span className="eyebrow">Nasta</span>
+              <span className="eyebrow">Nästa</span>
               <strong>{navigation.next.title}</strong>
             </a>
           ) : (
             <div className="panel chapter-nav__link chapter-nav__link--muted">
-              <span className="eyebrow">Nasta</span>
-              <strong>Du har natt slutet</strong>
+              <span className="eyebrow">Nästa</span>
+              <strong>Du har nått slutet</strong>
             </div>
           )}
         </div>

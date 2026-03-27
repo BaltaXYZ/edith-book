@@ -657,6 +657,10 @@ img {
   padding: 2.5rem 0 1rem;
 }
 
+.page-intro--embedded {
+  padding-top: 0;
+}
+
 .prose {
   color: var(--text);
   font-size: 1.08rem;

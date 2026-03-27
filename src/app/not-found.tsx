@@ -7,7 +7,7 @@ export default function NotFound() {
         <span className="eyebrow">404</span>
         <h1 className="page-title">Sidan kunde inte hittas</h1>
         <p className="section-copy">
-          Antingen finns inte kapitlet an, eller sa har adressen andrats.
+          Antingen finns inte kapitlet än, eller så har adressen ändrats.
         </p>
         <Link className="cta" href="/">
           Till startsidan

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 
@@ -155,16 +156,16 @@ export function AudiobookPlayer({
 
         <div className="audiobook-player__actions">
           <button
-            aria-label="Foregaende kapitel"
+            aria-label="Föregående kapitel"
             aria-pressed={false}
             className="audiobook-player__button audiobook-player__button--ghost"
             onClick={() => goToTrack(currentIndex - 1, isPlaying)}
             type="button"
           >
-            Foregaende
+            Föregående
           </button>
           <button
-            aria-label={isPlaying ? "Pausa upplasning" : "Spela upplasning"}
+            aria-label={isPlaying ? "Pausa uppläsning" : "Spela uppläsning"}
             aria-pressed={isPlaying}
             className="audiobook-player__button audiobook-player__button--primary"
             onClick={togglePlayback}
@@ -173,13 +174,13 @@ export function AudiobookPlayer({
             {isPlaying ? "Pausa" : "Spela"}
           </button>
           <button
-            aria-label="Nasta kapitel"
+            aria-label="Nästa kapitel"
             aria-pressed={false}
             className="audiobook-player__button audiobook-player__button--ghost"
             onClick={() => goToTrack(currentIndex + 1, isPlaying)}
             type="button"
           >
-            Nasta
+            Nästa
           </button>
         </div>
       </div>
@@ -200,7 +201,7 @@ export function AudiobookPlayer({
         controls
         onEnded={onEnded}
         onError={() => {
-          setAudioError("Det gick inte att lasa in ljudsparet. Prova att ladda om sidan.");
+          setAudioError("Det gick inte att läsa in ljudspåret. Prova att ladda om sidan.");
           setIsPlaying(false);
         }}
         onLoadedMetadata={(event) => {
@@ -254,11 +255,11 @@ export function AudiobookPlayer({
       ) : (
         <div className="audiobook-player__compact-footer">
           <a className="site-header__link" href={currentTrack.href}>
-            Las kapitlet
+            Läs kapitlet
           </a>
-          <a className="site-header__link" href="/ljudbok">
-            Oppna hela ljudboken
-          </a>
+          <Link className="site-header__link" href="/#ljudbok">
+            Öppna ljudboken
+          </Link>
         </div>
       )}
     </section>

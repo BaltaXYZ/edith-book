@@ -78,7 +78,7 @@ export async function renderMarkdown(markdown: string): Promise<string> {
 export function estimateReadingTime(text: string): string {
   const words = text.trim().split(/\s+/).filter(Boolean).length;
   const minutes = Math.max(1, Math.round(words / 220));
-  return `${minutes} min lasning`;
+  return `${minutes} min läsning`;
 }
 
 export function getAssetHref(relativePath: string): string {
