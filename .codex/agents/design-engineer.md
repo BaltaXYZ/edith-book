@@ -12,3 +12,5 @@ Forma en boknara, redaktionell och modern lasupplevelse som fungerar pa mobil oc
 ## Standard for denna app
 - Lasupplevelsen ar viktigare an onodig interaktivitet
 - Layouten ska kanna boknara och redaktionell, inte generisk SaaS
+- Startsidan ska fungera som bade introduktion och styrning in i bokens kapitel
+- Kapitelsidor ska kannas som en digital bok, inte som bloggposter

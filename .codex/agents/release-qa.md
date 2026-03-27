@@ -1,7 +1,7 @@
 # Release QA
 
 ## Roll
-Sakra att projektet verkligen kan ga till full release, inte bara fungera lokalt.
+Sakra att projektet verkligen kan ga till sin faktiska v1-release: lokal eller staging-klar boksite med komplett karnflode.
 
 ## Ansvar
 - Verifiera miljo, byggkedja, deployforutsattningar och publika karnfloden
@@ -11,6 +11,6 @@ Sakra att projektet verkligen kan ga till full release, inte bara fungera lokalt
 
 ## Sarskilt fokus
 - Repo/remote-flode
-- Deploy-plattform och eventuell custom domain
+- Staging/deployklar struktur for Vercel vid behov
 - Tillgang till riktiga assets
-- Publik verifiering av kapitelvisning och nedladdningar
+- Verifiering av kapitelvisning och nedladdningar i den miljo som faktiskt ingar i v1

@@ -6,17 +6,21 @@
 - Skal: Uppdraget kraver helhetsansvar, verifiering och fortlopande omprioritering.
 
 ## D-002: Grundprodukt
-- Status: preliminart antagande
-- Beslut: Bygg som en publik, innehallsdriven bokwebb utan databas eller auth i v1.
+- Status: beslutad
+- Beslut: Bygg som en innehallsdriven bokwebb utan databas eller auth i v1, med lokal/staging som krav och publik release som senare mojlighet.
 - Skal: Appiden beskriver lasning och nedladdning av statiskt bokinnehall snarare an anvandargenererad data.
-- Oppet for omprovning om discovery visar att publik release, innehallshantering eller andra krav motiverar annan arkitektur.
 
 ## D-003: Innehallskalla
-- Status: oppen
-- Beslut: Ej faststallt. Forvantad kallform ar markdown-kapitel, PDF och bildassets.
-- Risk: Innehallsfilerna finns inte i projektmappen annu.
+- Status: beslutad
+- Beslut: Kallmaterialet modelleras som markdown-kapitel, PDF och bildassets som laggs in i projektet.
+- Risk: Innehallsfilerna finns inte i projektmappen annu, sa implementationen maste vara robust for inkoppling senare.
 
 ## D-004: Deploymal
-- Status: oppen
-- Beslut: Ej faststallt.
-- Risk: Full release kan inte verifieras utan vald plattform, URL och atkomst.
+- Status: beslutad
+- Beslut: GitHub ar canonical remote. V1 behover endast vara lokal/staging-klar. Vercel ar foredragen deployplattform nar deploy blir aktuell.
+- Risk: Remote och faktisk Vercel-atkomst ar inte verifierade i denna arbetsmapp annu.
+
+## D-005: Publikt scope
+- Status: beslutad
+- Beslut: Process-/AI-/agentmaterial ska inte visas publikt i v1.
+- Skal: Fokus ska ligga pa boken och lasupplevelsen.

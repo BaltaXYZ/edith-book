@@ -5,24 +5,19 @@
 ### B-001: Faktiska innehallsfiler saknas i projektet
 - Status: oppen
 - Allvar: kritisk
-- Effekt: Vi kan inte bygga, testa eller verifiera verkliga las- och downloadfloden utan PDF, markdown-kapitel och relevanta assets.
+- Effekt: Vi kan inte slutverifiera verkliga las- och downloadfloden utan PDF, markdown-kapitel och relevanta assets.
 
-### B-002: Publik deployvag ar inte verifierad
+### B-002: Deployatkomst for staging ar inte verifierad
 - Status: oppen
-- Allvar: kritisk
-- Effekt: Full release kan inte uppnas utan vald plattform, URL/doman och fungerande atkomst.
+- Allvar: medel
+- Effekt: Appen kan byggas deployklar, men stagingdeploy kan inte verifieras fullt ut forran atkomst finns.
 
-### B-003: Remote-flode ar inte etablerat
+### B-003: Remote-flode ar inte etablerat i arbetsmappen
 - Status: oppen
-- Allvar: hog
+- Allvar: medel
 - Effekt: Lokal Git finns nu, men kravet pa lopande push/PR kan inte uppfyllas fullt ut utan remote-strategi.
 
-### B-004: Publiceringsrattigheter ar oklara
-- Status: oppen
-- Allvar: kritisk
-- Effekt: Vi kan inte ansvarigt publicera bokmaterial, bilder eller processmaterial utan klartecken.
-
-### B-005: Releasekrav for publik kontra lokal leverans ar inte uttryckligen bekräftade
+### B-004: Faktiskt innehall maste fortfarande levereras in i forvantad struktur
 - Status: oppen
 - Allvar: hog
-- Effekt: Definitionen av "klart" och vilka externa steg som maste genomforas ar fortfarande delvis oklara.
+- Effekt: Vi kan bygga sajt och pipeline nu, men inte slutverifiera verkligt bokinnehall forran filerna finns i projektet.

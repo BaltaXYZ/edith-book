@@ -1,0 +1,26 @@
+{
+  "id": "edith-sodergran-biografi-online",
+  "title": "Edith Södergran – biografi online",
+  "subtitle": "En boknära webbplats för läsning och nedladdning",
+  "language": "sv",
+  "status": "placeholder",
+  "description": "Filbaserad innehållsmodell för en biografisajt med kapitel, nedladdningar och redaktionell bokpresentation.",
+  "paths": {
+    "chaptersDir": "chapters",
+    "assetsDir": "assets",
+    "downloadsDir": "downloads",
+    "coverImage": "assets/cover.jpg",
+    "pdf": "downloads/edith-sodergran-biografi.pdf"
+  },
+  "downloads": [
+    {
+      "label": "Hela boken som PDF",
+      "type": "pdf",
+      "path": "downloads/edith-sodergran-biografi.pdf"
+    }
+  ],
+  "notes": [
+    "Byt ut placeholder-status när verkliga kapitel och assets är inlagda.",
+    "Kapitel ska ligga som separata markdown-filer i content/book/chapters."
+  ]
+}

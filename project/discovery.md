@@ -18,11 +18,15 @@ Appen ar en publik, innehallsdriven bokwebb for en fullangdsbiografi om Edith So
 - Eventuell process-/metodsida
 
 ## Fragor som maste besvaras av anvandaren nu
-- Ar publik deploy ett uttryckligt krav for denna release, eller racker lokal/staging tills vidare?
-- Var finns de faktiska innehallsfilerna som appen ska bygga pa: PDF, markdown-kapitel, omslagsbild och ovriga assets?
-- Ar allt material godkant for publik publicering och nedladdning?
-- Vilken deploy-plattform och eventuell doman ska anvandas for produktion?
-- Ska process-/AI-/agentmaterial visas publikt, och i sa fall vilken niva av transparens ar avsedd?
+- Inga oppna maste-fragor kvar just nu.
+
+## Bekraftade svar fran anvandaren
+- Lokal eller staging racker for v1; publik release ar inte krav nu
+- GitHub ar canonical remote
+- Vercel ar foredragen deployplattform om deploy blir aktuell
+- Materialet far antas vara godkant for publik visning och nedladdning
+- Process-/AI-/agentmaterial ska inte visas publikt i v1
+- Kallmaterialet finns som PDF, markdown och ovriga assets som ska laggas in i projektet
 
 ## Fragor som kan losas med rimliga standardantaganden
 - Ingen databas i v1
@@ -44,7 +48,7 @@ Appen ar en publik, innehallsdriven bokwebb for en fullangdsbiografi om Edith So
 ## Discovery-gate
 Implementation far starta forst nar foljande ar sant:
 - releaseformen ar tydlig
-- innehallsunderlaget finns tillgangligt
+- innehallsunderlaget finns tillgangligt eller sa finns en tydlig struktur for att koppla in det utan omarbete
 - publiceringsrattigheter ar tydliga
-- deployvag ar vald och verifierbar
+- deployvag ar vald och verifierbar i den miljo som ingar i v1
 - externa blockerare ar dokumenterade och minimerade

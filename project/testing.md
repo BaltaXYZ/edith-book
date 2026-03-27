@@ -17,6 +17,13 @@ Verifiera att sajten fungerar tekniskt, innehallsmassigt och upplevelsemassigt f
 - Start- och kapitelnavigering fungerar pa mobil och desktop
 - Metadata och sidtitlar ar satta
 
+## Senaste verifiering
+- `pnpm lint`: passerar
+- `pnpm typecheck`: passerar
+- `pnpm build`: passerar
+- Lokal HTTP-kontroll: `200 OK` for `/`, `/kapitel` och `/ladda-ner`
+- Placeholder-lage verifierat nar riktiga bokfiler saknas
+
 ## Ooppnade testfragor
 - Om e2e-ramverk ska anvandas eller om manuell + skriptad smoke-test racker
 - Om visual regression behovs for den redaktionella layouten

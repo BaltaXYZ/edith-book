@@ -8,7 +8,7 @@ Projektet far kallas klart for v1 nar foljande ar uppfyllt:
 - Hela boken kan laddas ned som PDF
 - Designen ar responsiv, lasbar och tillrackligt mogen for publik anvandning
 - Dokumentation for lokal korning, innehallsuppdatering och deploy finns
-- Om publik release ar krav: publik URL ar i drift och verifierad mot karnfloden
+- Om staging eller deploy ingar i iterationen: miljo ar verifierad mot karnfloden
 
 ## Gate fore implementation
 Alla punkter nedan maste vara grona eller uttryckligen accepterade som externa blockerare:
@@ -16,19 +16,24 @@ Alla punkter nedan maste vara grona eller uttryckligen accepterade som externa b
 - Innehallsunderlaget finns eller leveransplanen ar verifierad
 - Publiceringsrattigheter ar tydliga
 - Repo/remote-strategi ar klar om push/PR ska inga
-- Deploy-plattform och eventuell doman ar klarlagda
-- Nodvandiga credentials eller miljoer finns for autonom drift
+- Deploystrategin ar klarlagd for den miljo som ingar i v1
+- Nodvandiga credentials eller miljoer finns for de steg som faktiskt ska genomforas i v1
 
 ## Nulagesbedomning
-- Status: inte redo annu
+- Status: redo att implementera med dokumenterade externa blockerare
 - Skal:
-  - Projektet saknar applikationskod och styrsystemet sattes precis upp
-  - Ingen Git-remote ar verifierad
-  - Ingen deploy-plattform ar verifierad
+  - V1 ar tydligt definierad som lokal/staging-klar boksite
+  - Publiceringsrattigheter ar klarerade genom anvandarens besked
+  - Appskalet, innehallspipelinen och filserveringen ar implementerade
+  - Lokal verifiering med lint, typecheck, build och HTTP-svar ar genomford
+  - Ingen Git-remote ar verifierad i arbetsmappen annu
+  - Ingen faktisk deployatkomst ar verifierad annu
   - Inga riktiga innehallsfiler finns i arbetsmappen
-  - Publiceringsrattigheter ar inte verifierade
 
 ## Vad som kravs for gront lage
-- Svar pa de kritiska fragorna i [project/discovery.md](/Users/baltax/Documents/apps/App-Sodergran/project/discovery.md)
-- Verifiering av innehall, deployvag och atkomster
-- Uppdaterad releasechecklista efter anvandarens svar
+- Inkoppling av riktiga innehallsfiler
+- Verifierad remote om push ska genomforas
+- Verifierad deployatkomst om stagingdeploy ska genomforas
+
+## Aktuell releasebedomning
+Projektet ar lokalt verifierat och deployklart i struktur, men inte slutklart for v1 eftersom de verkliga bokfilerna fortfarande saknas i projektet.

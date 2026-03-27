@@ -7,9 +7,10 @@
 - Innehall kommer fran lokala filer: markdown, PDF och bildassets.
 - Anvandarens viktigaste flode ar att upptacka boken, lasa online och ladda ned PDF.
 - Svenska ar primart sprak i forsta releasen.
-- Process-/agentinnehall ar sekundart och far inte exponeras publikt utan uttryckligt beslut.
+- Process-/agentinnehall ar internt och far inte exponeras publikt i v1.
+- V1 behover vara lokal/staging-klar och deployklar, inte nödvändigtvis publik.
 
 ## Antaganden som maste verifieras senare
 - Att kapitelmaterialet ar komplett och redo att publiceras
-- Att en publik doman eller minst en produktions-URL kommer att finnas
-- Att vald deploy-plattform kan hanteras autonomt i denna miljo
+- Att alla faktiska assets laggs in i den forvantade projektstrukturen
+- Att Vercel-atkomst finns om stagingdeploy ska genomforas senare
